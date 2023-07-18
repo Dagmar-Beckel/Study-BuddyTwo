@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct Study_BuddyTwoApp: App {
-    var body: some Scene {
-        WindowGroup {
+    //MARK: Since We're doing Background fetching Intilizing Here
+    @StateObject var pomodoroModel: PomodoroModel = .init()
+    var body: some Scene{
+        WindowGroup{
             ContentView()
+                .environmentObject(pomodoroModel)
         }
     }
 }
