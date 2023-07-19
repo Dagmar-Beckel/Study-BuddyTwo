@@ -76,7 +76,7 @@ struct Home: View {
                         
                         Button{
                             if pomodoroModel.isStarted{
-                                
+                                pomodoroModel.stopTimer()
                             }else{
                                 pomodoroModel.addNewTimer = true
                             }
@@ -108,12 +108,19 @@ struct Home: View {
                             pomodoroModel.seconds = 0
                             pomodoroModel.addNewTimer = false
                         }
+                    
                     NewTimerView()
                         .frame(maxHeight: .infinity, alignment: .bottom)
                         .offset(y: pomodoroModel.addNewTimer ? 0 : 400)
                 }
                 .animation(.easeInOut, value: pomodoroModel.addNewTimer)
             })
+            .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()){
+                _ in
+                if pomodoroModel.isStarted{
+                    pomodoroModel.updateTimer()
+                }
+            }
         }
     }
     //MARK: New Timer Bottom Sheet
@@ -179,7 +186,7 @@ struct Home: View {
             .padding(.top,20)
             
             Button{
-                
+                pomodoroModel.startTimer()
             }label:{
                 Text("Save")
                     .font(.title3)
